@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+   <section>
+      <div class="container">
+         <div class="cart" id="cart-body">
+            <div class="col-md-12 col-lg-10 mx-auto">
+               <div class="cart-item">
+                  <div class="row" id="phone">
+                     <div class="col-md-7 center-item">
+                        <img src="images/product-1.png" alt="">
+                        <h5>iPhone 11 128GB Black</h5>
+                     </div>
+
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button class="btn btn-default" id="minus-btn"><i class="fas fa-minus"></i></button>
+                           <input type="text" id="phone-quantity" class="form-control text-center" value="1">
+                           <button class="btn btn-default" id="plus-btn"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <h5>$ <span id="current-prise">1219</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item" id="remove">
+                     </div>
+
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row" id="case">
+                     <div class="col-md-7 center-item mx-auto">
+                        <img src="images/product-2.png" alt="">
+                        <h5>iPhone 11 Silicone Case - Black</h5>
+                     </div>
+                     <div class="col-md-5 center-item">
+                        <div class="input-group number-spinner">
+                           <button class="btn btn-default" id="minus-btn2"><i class="fas fa-minus"></i></button>
+                           <input type="text" class="form-control text-center" id="case-item" value="1">
+                           <button class="btn btn-default" id="plus-btn2"><i class="fas fa-plus"></i></button>
+
+                        </div>
+                        <h5>$ <span id="case-prise">59</span></h5>
+                        <img src="images/remove.png" alt="" class="remove-item" id="remove2">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="cart-item">
+                  <div class="row">
+
+                     <div class="col-md-8">
+                        <h5>Subtotal: </h5>
+                        <h5>Tax:</h5>
+                        <h5>Total:</h5>
+                     </div>
+
+                     <div class="col-md-4 status">
+                        <h5>$ <span id="subtotal">1278</span></h5>
+                        <h5>$ <span id="tax">64</span></h5>
+                        <h5>$ <span id="total">1342</span></h5>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 pt-4 pb-4">
+                  <button type="button" class="btn btn-success check-out" id="check">Check Out</button>
+               </div>
+            </div>
+         </div>
+         
+      </div>
+   </section>
+
+   <script>
+      function increment(quantity) {
+         let count = document.getElementById(quantity);
+         count.value++;
+         let items = document.getElementById(quantity).value;
+         let total = parseInt(items) * 1219;
+         document.getElementById('current-prise').innerText = total;
+      }
+      function decrement (quantity){
+         let count = document.getElementById(quantity);
+         count.value--;
+         let items = document.getElementById(quantity).value;
+         let totalPhone = parseInt(items) * 1219;
+         document.getElementById('current-prise').innerText = totalPhone;
+      }
+      document.getElementById('plus-btn').addEventListener('click', function(){
+         increment('phone-quantity');
+         totalPrise('subtotal');
+         tax('tax');
+         total();
+      })
+      document.getElementById('minus-btn').addEventListener('click', function(){
+         decrement('phone-quantity');
+         totalPrise('subtotal');
+         tax('tax');
+         total();
+      })
+      function incrementCase(quantity) {
+         let count = document.getElementById(quantity);
+         count.value++;
+         let items = document.getElementById(quantity).value;
+         let totalCase = parseInt(items) * 59;
+         document.getElementById('case-prise').innerText = totalCase;
+      }
+      function decrementCase (quantity){
+         let count = document.getElementById(quantity);
+         count.value--;
+         let items = document.getElementById(quantity).value;
+         let totalCase = parseInt(items) * 59;
+         document.getElementById('case-prise').innerText = totalCase;
+      }
+      document.getElementById('plus-btn2').addEventListener('click', function(){
+         incrementCase('case-item');
+         totalPrise('subtotal');
+         tax('tax');
+         total();
+      })
+      document.getElementById('minus-btn2').addEventListener('click', function(){
+         decrementCase('case-item');
+         totalPrise('subtotal');
+         tax('tax');
+         total();
+      })
+      function totalPrise(sub) {
+         let totalPhone = document.getElementById('current-prise').innerText;
+         let totalCase = document.getElementById('case-prise').innerText;
+         let subtotal = document.getElementById(sub).innerHTML;
+         let subtotalPrise = parseInt(totalPhone) + parseInt(totalCase);
+         document.getElementById(sub).innerHTML = subtotalPrise;
+      }
+      function tax(tax){
+         let subtotalPrise =  document.getElementById('subtotal').innerHTML;
+         let subtotalTax = subtotalPrise * 0.05;
+         subtotalTax = Math.round(subtotalTax);
+         document.getElementById(tax).innerHTML = subtotalTax;
+      }
+      function total(){
+         let subtotal = document.getElementById('subtotal').innerHTML;
+         let subtotalTax = document.getElementById('tax').innerHTML;
+         let total = parseInt(subtotal) + parseInt(subtotalTax);
+         document.getElementById('total').innerHTML = total;
+      }
+      function bubbleItem(bubble, product){
+         const remove = document.getElementById(bubble);
+      remove.addEventListener('click', function (){
+         const area = document.getElementById(product);
+         area.style.display = 'none';
+      })
+      }
+      bubbleItem('remove', 'phone')
+      bubbleItem('remove2', 'case')
+   </script>
+</body>
+
+</html>
