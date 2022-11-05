@@ -1,80 +1,48 @@
-function increment(quantity) {
-    let count = document.getElementById(quantity);
-    count.value++;
-    let items = document.getElementById(quantity).value;
-    let total = parseInt(items) * 1219;
-    document.getElementById('current-prise').innerText = total;
- }
- function decrement (quantity){
-    let count = document.getElementById(quantity);
-    count.value--;
-    let items = document.getElementById(quantity).value;
-    let totalPhone = parseInt(items) * 1219;
-    document.getElementById('current-prise').innerText = totalPhone;
- }
- document.getElementById('plus-btn').addEventListener('click', function(){
-    increment('phone-quantity');
-    totalPrise('subtotal');
-    tax('tax');
-    total();
- })
- document.getElementById('minus-btn').addEventListener('click', function(){
-    decrement('phone-quantity');
-    totalPrise('subtotal');
-    tax('tax');
-    total();
- })
- function incrementCase(quantity) {
-    let count = document.getElementById(quantity);
-    count.value++;
-    let items = document.getElementById(quantity).value;
-    let totalCase = parseInt(items) * 59;
-    document.getElementById('case-prise').innerText = totalCase;
- }
- function decrementCase (quantity){
-    let count = document.getElementById(quantity);
-    count.value--;
-    let items = document.getElementById(quantity).value;
-    let totalCase = parseInt(items) * 59;
-    document.getElementById('case-prise').innerText = totalCase;
- }
- document.getElementById('plus-btn2').addEventListener('click', function(){
-    incrementCase('case-item');
-    totalPrise('subtotal');
-    tax('tax');
-    total();
- })
- document.getElementById('minus-btn2').addEventListener('click', function(){
-    decrementCase('case-item');
-    totalPrise('subtotal');
-    tax('tax');
-    total();
- })
- function totalPrise(sub) {
-    let totalPhone = document.getElementById('current-prise').innerText;
-    let totalCase = document.getElementById('case-prise').innerText;
-    let subtotal = document.getElementById(sub).innerHTML;
-    let subtotalPrise = parseInt(totalPhone) + parseInt(totalCase);
-    document.getElementById(sub).innerHTML = subtotalPrise;
- }
- function tax(tax){
-    let subtotalPrise =  document.getElementById('subtotal').innerHTML;
-    let subtotalTax = subtotalPrise * 0.05;
-    subtotalTax = Math.round(subtotalTax);
-    document.getElementById(tax).innerHTML = subtotalTax;
- }
- function total(){
-    let subtotal = document.getElementById('subtotal').innerHTML;
-    let subtotalTax = document.getElementById('tax').innerHTML;
-    let total = parseInt(subtotal) + parseInt(subtotalTax);
-    document.getElementById('total').innerHTML = total;
- }
- function bubbleItem(bubble, product){
-    const remove = document.getElementById(bubble);
- remove.addEventListener('click', function (){
-    const area = document.getElementById(product);
-    area.style.display = 'none';
- })
- }
- bubbleItem('remove', 'phone')
- bubbleItem('remove2', 'case')
+document.getElementById('phone-increase').addEventListener('click', function(){
+    getProductValue('phone', true);
+})
+document.getElementById('phone-decrease').addEventListener('click', function(){
+    getProductValue('phone',false);
+})
+document.getElementById('case-increase').addEventListener('click', function(){
+    getProductValue('case',true);
+})
+document.getElementById('case-decrease').addEventListener('click', function(){
+    getProductValue('case',false);
+})
+function getProductValue(product,isIncrease) {
+    const productInput = document.getElementById(product + '-count');
+    const productCount = parseInt(productInput.value);
+    let productNewCount = productCount;
+    if(isIncrease == true) {
+        productNewCount = productCount + 1;
+    }
+    if(isIncrease == false && productCount > 0) {
+        productNewCount = productCount - 1;
+    }
+    productInput.value = productNewCount; 
+    let productPrise = 0;
+    if(product == 'phone') {
+        productPrise = productNewCount * 1219;
+    }
+    if(product == 'case') {
+        productPrise = productNewCount * 59;
+    }
+    document.getElementById(product + '-prise').innerText = productPrise;
+    calculateTotal()
+}
+function calculateTotal(){
+    const phoneCount = getInputValue('phone');
+    const caseCount = getInputValue('case');
+    const totalAmount = phoneCount * 1219 + caseCount * 59;
+    document.getElementById('total-amount').innerText = totalAmount;
+    const tax = Math.round(totalAmount * 0.05);
+    document.getElementById('tax').innerText = tax;
+    const grandTotal = totalAmount + tax;
+    document.getElementById('grand-total').innerText = grandTotal;
+}
+function getInputValue(product){
+    const produntInput = document.getElementById(product + '-count')
+    const produntCount = parseInt(produntInput.value);
+    return produntCount;
+}
